@@ -1,0 +1,2 @@
+sf-suds==0.4.3
+git+git://github.com/scottpersinger/salesforce-python-toolkit.git
