@@ -12,12 +12,15 @@ conn.login('scottp+test@heroku.com', process.env.PASSWORD + process.env.TOKEN, f
 
   var total = 0;
   var start = new Date().getTime();
+  var last = new Date().getTime();
 
   conn.query("Select Id, Name, Birthdate__c, FirstName__c, LastName__c from Contact1m__c")
   	.on('record', function(record) {
   		total = total + 1;
-  		if ((total % 1000) == 0) {
-  			console.log(total);
+  		if ((total % 2000) == 0) {
+  			var now = new Date().getTime();
+  			console.log(total + ", last 2000 took " + ((now - last)/1000) + " secs");
+  			last = now;
   		}
   	})
   	.on('end', function() {
