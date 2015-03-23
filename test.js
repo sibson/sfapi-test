@@ -10,19 +10,19 @@ function timer(name, callback) {
 conn.login('scottp+test@heroku.com', process.env.PASSWORD + process.env.TOKEN, function(err, res) {
   if (err) { return console.error(err); }
 
-  var records = [];
+  var total = 0;
   var start = new Date().getTime();
 
   conn.query("Select Id, Name, Birthdate__c, FirstName__c, LastName__c from Contact1m__c")
   	.on('record', function(record) {
-  		if ((records.length % 1000) == 0) {
-  			console.log(records.length);
+  		total = total + 1;
+  		if ((total % 1000) == 0) {
+  			console.log(total);
   		}
-  		records.push(record);
   	})
   	.on('end', function() {
   		var delta = new Date().getTime() - start;
-  		console.log("Total fetch of " + records.length + " records took " + delta + " secs");
+  		console.log("Total fetch of " + total + " records took " + delta + " secs");
   	})
   	.run({autoFetch:true, maxFetch:9999999});
 
