@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import gc
 
 from sforce.partner import SforcePartnerClient
 client = SforcePartnerClient('./partnerwsdl.xml')
@@ -26,11 +27,15 @@ with Timer("totalRun"):
 	with Timer("query"):	
 		r = client.query("Select Id, Name, Birthdate__c, FirstName__c, LastName__c from Contact1m__c")
 		total += len(r.records)
+		del r.records
+
 
 	while not r.done:
 		with Timer("queryMore"):
 			r = client.queryMore(r.queryLocator)
 			total += len(r.records)
+			del r.records
+			gc.collect()
 			print total
 
 	print "Fetched {} total records".format(total)
