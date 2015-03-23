@@ -1,8 +1,9 @@
 from datetime import datetime
+import os
 
 from sforce.partner import SforcePartnerClient
 client = SforcePartnerClient('./partnerwsdl.xml')
-client.login("scottp+test@heroku.com", "875ISCOOL", "nuzUIIHsKUt7NZ4Ufb3vbL34h")
+client.login("scottp+test@heroku.com", os.environ['PASSWORD'], os.environ['TOKEN'])
 queryOptions = client.generateHeader('QueryOptions')
 queryOptions.batchSize = 2000
 client.setQueryOptions(queryOptions)

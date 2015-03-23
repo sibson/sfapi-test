@@ -7,7 +7,7 @@ function timer(name, callback) {
 	console.log(name + " - " + (new Date().getTime() - start) + " secs");
 }
 
-conn.login('scottp+test@heroku.com', '875ISCOOLnuzUIIHsKUt7NZ4Ufb3vbL34h', function(err, res) {
+conn.login('scottp+test@heroku.com', process.env.PASSWORD + process.env.TOKEN, function(err, res) {
   if (err) { return console.error(err); }
 
   var records = [];
@@ -15,6 +15,9 @@ conn.login('scottp+test@heroku.com', '875ISCOOLnuzUIIHsKUt7NZ4Ufb3vbL34h', funct
 
   conn.query("Select Id, Name, Birthdate__c, FirstName__c, LastName__c from Contact1m__c")
   	.on('record', function(record) {
+  		if ((records.length % 1000) == 0) {
+  			console.log(records.length);
+  		}
   		records.push(record);
   	})
   	.on('end', function() {
